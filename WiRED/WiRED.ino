@@ -1,175 +1,182 @@
- /*  
- * WiRED 
- * November 9th, 2017
- *  
- */
-
-const int numReadings = 10;
-
-int readingsA0[numReadings];
-int readingsA1[numReadings];
-int readingsA2[numReadings];
-int readingsA3[numReadings];
-
-int readIndex = 0;
-
-int total0 = 0;
-int total1 = 0;
-int total2 = 0;
-int total3 = 0;
-
-int avg0 = 0;
-int avg1 = 0;
-int avg2 = 0;
-int avg3 = 0;
-
-int r0 = 0;
-int r1 = 0;
-int r2 = 0;
-int r3 = 0;
-
-
-
-int x = 0;                              // a place to hold pin values
-int ledpin = 13;
-
-int gPin;
-
-void setup()
-{
-  Serial.begin(9600);               // 115200 is the default Arduino Bluetooth speed
-  digitalWrite(13,HIGH);              ///startup blink
-  delay(600);
-  digitalWrite(13,LOW);
-  pinMode(13,INPUT);
-
-  
-  init_readings_array();
-  
-}
-
-
-
-void loop()
-{ 
-  
-
-
-  for(int pin = 0 ; pin<=3; pin++){
-    gPin = pin;
-    switch(pin){
-      case 0: 
-          avg0 = smoothing(pin, &total0, readingsA0, r0);
-          sendValue(avg0);
-          r0++; 
-        break;
-      case 1: 
-           avg1 = smoothing(pin, &total1, readingsA1, r1);
-          sendValue(avg1);
-          r1++;
-        break;
-      case 2: 
-          avg2 = smoothing(pin, &total2, readingsA2, r2);
-          sendValue(avg2);
-          r2++;
-        break;
-      case 3: 
-          avg3 = smoothing(pin, &total3, readingsA3, r3);
-          sendValue(avg3);
-          r3++;
-        break;
-      default:
-        break;
-        
-    }
-
-
-    Serial.println();                 // Send a carriage returnt to mark end of pin data. 
-    delay (50);                        // add a delay to prevent crashing/overloading of the serial port
-
-  
-  }
-
- readIndex = readIndex + 1;
-
-  // if we're at the end of the array...
-  if (readIndex >= numReadings) {
-    // ...wrap around to the beginning:
-    readIndex = 0;
-  }
-
-  
-      Serial.println();                 // Send a carriage returnt to mark end of pin data. 
-      delay(10);                        // add a delay to prevent crashing/overloading of the serial port
-      //sendValue(avg);
-
-}
-
-void init_readings_array(){
-     // initialize all the readings to 0:
-    for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-      readingsA0[thisReading] = 0;
-      readingsA1[thisReading] = 0;
-      readingsA2[thisReading] = 0;
-      readingsA3[thisReading] = 0;
-    }
-}
-
-
-void sendValue (int avg){              // function to send the pin value followed by a "space". 
-
-     Serial.print(avg);
-     Serial.write(32);
- 
-}
-
-int smoothing(int inputPin, int* total, int readings[], int readIndex){
 /*
-    int readings[numReadings];      // the readings from the analog input
-               
-    double total = 0;                  // the running total
-    int average = 0;                // the average
+ * MKR1000_UDP_Multiread
+ * Base Source: https://www.arduino.cc/en/Tutorial/Wifi101WiFiUdpSendReceiveString
+ * Editor: (Kyung)Jin Han
+ * Description: This code takes the values coming from ADC ports (A1-6), encode them in OSC bytes.
+ *              OSC data is then sent to the remote computer in the same network as MKR1000 by UDP.
+ * Library: Modified WiFi101 library (includes OSC objects).
+ */
+#include <SPI.h>
+#include <WiFi101.h>
+#include <WiFiUdp.h>
+
+#include "OSCMessage.h"
+
+//************************************************************
+int status = WL_IDLE_STATUS;
+
+int keyIndex = 0;
+
+//Max,msp computer must be in the same network as below
+char ssid[] = "Hello World";
+char pass[] = "laptoporchestra491";
+unsigned int localPort = 3001;
+
+char packetBuffer[255];
+char ReplyBuffer[] = "acknowledge";
+
+//create new osc message
+OSCMessage msg;
+WiFiUDP Udp;
+
+int x = 0;
 
 
+//************************************************************setup
+void setup() {
+  Serial.begin(9600);
 
-  for(int readIndex = 0; readIndex < numReadings; readIndex ++ ) {
+  //Comment below when powered by battery.
+  while (!Serial) {
+    ; // wait for serial port to connect.
+  }
 
-    
-     // subtract the last reading:
-      total = total - readings[readIndex];
-      // read from the sensor:
-      readings[readIndex] = analogRead(inputPin);
-      // add the reading to the total:
-      total = total + readings[readIndex];
-      // advance to the next position in the array:
-      readIndex = readIndex + 1;
+  // check for the presence of the shield:
+  if (WiFi.status() == WL_NO_SHIELD) {
+    Serial.println("NOT PRESENT");
+    return; // don't continue
+  }
 
+  connectToWifi();
+}
+
+
+//************************************************************loop
+void loop() {
+
+  if ( status != WL_CONNECTED){
+    Serial.println("Connection to SSID lost");
+    //turn LED to Red.
+    //try reconnecting
+    connectToWifi();
   }
   
-
-  // calculate the average:
-  average = total / numReadings;
-
-  return average;
-
-*/
-// subtract the last reading:
-  *total = *total - readings[readIndex];
-  // read from the sensor:
-  readings[readIndex] = analogRead(inputPin);
-  // add the reading to the total:
-  *total = *total + readings[readIndex];
-  // advance to the next position in the array:
-
+  int packetSize = Udp.parsePacket();
   
- 
-  // calculate the average:
-  int average = *total / numReadings;
-  // send it to the computer as ASCII digits
-  Serial.println(average);
-  
+  //Purpose is to get IP address of MAX computer 
+  if (packetSize)
+  {
+    //send a packet from MAX computer to initialize the UDP 
+    Serial.print("Received packet of size ");
+    Serial.println(packetSize);
+    Serial.print("From ");
+    
+    //record IP of MAX computer
+    IPAddress remoteIp = Udp.remoteIP();
+    Serial.print(remoteIp);
+    Serial.print(", port ");
+    Serial.println(Udp.remotePort());
 
+    // read the packet into packetBufffer
+    int len = Udp.read(packetBuffer, 255);
+    if (len > 0) packetBuffer[len] = 0;
+    Serial.println("Contents:");
+    Serial.println(packetBuffer);
+
+    // send a reply, to the IP address and port that sent us the packet we received
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write(ReplyBuffer);
+    Udp.endPacket();
+
+    //turn LED on "Colour"
+  }
+
+  //start sending the value when we know the IP Address of the machine.
+  if (Udp.remoteIP()){
+
+    msg.beginMessage("sensors");
+    for(int pin = 1; pin <= 2; pin++){
+    x = analogRead(pin);
+
+    /* Uncomment for Version 2 */
+    sendUDP(x, pin);
+    
+    //msg.addArgInt32(x);
+    }
+    /* REFERENCE
+    string.toCharArray(copy, 50);
+    msg.setAddress(dummieIp, 8001);
+    msg.beginMessage("opt");
+    msg.addArgInt32(x);
+    msg.addArgString(copy);
+    msg.addArgFloat(v2);
+    */
+    /*
+    Udp.beginPacket(Udp.remoteIP(), 8001);
+    Udp.oscWrite(&msg);
+    Udp.endPacket();
+    msg.flush();
+    */
+    
+    delay(50);
+  }
 }
+/*Uncomment for Version 2 - sends a UDP packet per pin.*/
+void sendUDP(int x, int pin){
+  float tag = pin/10.0; //0.2 for sensor 2
+  //char tagC[2];
+  //tagC = "s" + pin;
+
+  msg.addArgFloat(tag);
+  msg.addArgInt32(x);
+  Udp.beginPacket(Udp.remoteIP(), 8001);
+  Udp.oscWrite(&msg);
+  Udp.endPacket();
+  msg.flush();
+  
+}
+
+
+// Initializing the printWifiStatus() Function. ************************************
+void printWifiStatus() {
+  // print the SSID of the network you're attached to:
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  // print your WiFi shield's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+}
+
+// Initializing the printWifiStatus() Function. ************************************
+void connectToWifi() {
+  
+  // attempt to connect to WiFi network:
+  while ( status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(ssid);
+    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+    status = WiFi.begin(ssid, pass);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+  Serial.println("Connected to wifi");
+  printWifiStatus();
+
+  Serial.println("\nStarting connection to server...");
+  
+  // if you get a connection, report back via serial:
+  Udp.begin(localPort);
+}
+
 
 
 
