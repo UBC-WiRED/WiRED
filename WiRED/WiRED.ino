@@ -1,14 +1,6 @@
  /*  
- *  Arduino2Max
- *  Send pin values from Arduino to MAX/MSP
- *  
- *  Arduino2Max.pde
- *  ------------  
- *  This version: .5, November 29, 2010
- *  ------------
- *  Copyleft: use as you like
- *  by Daniel Jolliffe
- *  Based on a sketch and patch by Thomas Ouellet Fredericks  tof.danslchamp.org
+ * WiRED 
+ * November 9th, 2017
  *  
  */
 
