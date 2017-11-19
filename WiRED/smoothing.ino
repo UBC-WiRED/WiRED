@@ -21,7 +21,7 @@ int readIndex = 0;              // the index of the current reading
 
 //int inputPin = A1;
 
-void setup() {
+void smoothsetup() {
   // initialize serial communication with computer:
   Serial.begin(9600);
   // initialize all the readings to 0:
@@ -32,7 +32,7 @@ void setup() {
   }
 }
 
-void loop() {
+void smoothloop() {
   int temp = readIndex;
   
   smoothing(0, A1);

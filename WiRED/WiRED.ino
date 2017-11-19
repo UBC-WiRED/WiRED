@@ -31,6 +31,8 @@ WiFiUDP Udp;
 
 int x = 0;
 
+//IPAddress IP(198,168,0,102);
+
 
 //************************************************************setup
 void setup() {
@@ -98,10 +100,11 @@ void loop() {
     for(int pin = 1; pin <= 2; pin++){
     x = analogRead(pin);
 
-    /* Uncomment for Version 2 */
+    /* Uncomment for Version 2 
     sendUDP(x, pin);
-    
-    //msg.addArgInt32(x);
+    */
+    msg.addArgInt32(x);
+    //delay(50); --uncomment this to test if delaying will solve the issue.
     }
     /* REFERENCE
     string.toCharArray(copy, 50);
@@ -111,17 +114,17 @@ void loop() {
     msg.addArgString(copy);
     msg.addArgFloat(v2);
     */
-    /*
+    
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&msg);
     Udp.endPacket();
     msg.flush();
-    */
+    
     
     delay(50);
   }
 }
-/*Uncomment for Version 2 - sends a UDP packet per pin.*/
+/*Uncomment for Version 2 - sends a UDP packet per pin.
 void sendUDP(int x, int pin){
   float tag = pin/10.0; //0.2 for sensor 2
   //char tagC[2];
@@ -135,7 +138,7 @@ void sendUDP(int x, int pin){
   msg.flush();
   
 }
-
+*/
 
 // Initializing the printWifiStatus() Function. ************************************
 void printWifiStatus() {
@@ -162,6 +165,9 @@ void connectToWifi() {
   while ( status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
+
+    
+    //WiFi.config(IP);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
 
