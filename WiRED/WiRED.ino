@@ -31,7 +31,8 @@ WiFiUDP Udp;
 
 int x = 0;
 
-//IPAddress IP(198,168,0,102);
+//microcontroller WiFi setup
+IPAddress IP(198,168,0,119);
 
 
 //************************************************************setup
@@ -40,12 +41,12 @@ void setup() {
 
   //Comment below when powered by battery.
   while (!Serial) {
-    ; // wait for serial port to connect.
+    // wait for serial port to connect.
   }
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("NOT PRESENT");
+    Serial.println("WIFI SHIELD NOT PRESENT");
     return; // don't continue
   }
 
@@ -105,6 +106,14 @@ void loop() {
     */
     msg.addArgInt32(x);
     //delay(50); --uncomment this to test if delaying will solve the issue.
+
+    Udp.beginPacket(Udp.remoteIP(), 8001);
+    Udp.oscWrite(&msg);
+    Udp.endPacket();
+    msg.flush();
+    
+
+    
     }
     /* REFERENCE
     string.toCharArray(copy, 50);
@@ -115,10 +124,6 @@ void loop() {
     msg.addArgFloat(v2);
     */
     
-    Udp.beginPacket(Udp.remoteIP(), 8001);
-    Udp.oscWrite(&msg);
-    Udp.endPacket();
-    msg.flush();
     
     
     delay(50);
@@ -148,7 +153,7 @@ void printWifiStatus() {
 
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
+  Serial.print("WiFi Shield IP Address: ");
   Serial.println(ip);
 
   // print the received signal strength:
@@ -167,9 +172,10 @@ void connectToWifi() {
     Serial.println(ssid);
 
     
-    //WiFi.config(IP);
+    
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
+    WiFi.config(IP);
 
     // wait 10 seconds for connection:
     delay(10000);
