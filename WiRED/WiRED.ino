@@ -100,12 +100,8 @@ void loop() {
     msg.beginMessage("sensors");
     for(int pin = 1; pin <= 2; pin++){
     x = analogRead(pin);
-
-    /* Uncomment for Version 2 
-    sendUDP(x, pin);
-    */
     msg.addArgInt32(x);
-    //delay(50); --uncomment this to test if delaying will solve the issue.
+
 
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&msg);
@@ -115,35 +111,13 @@ void loop() {
 
     
     }
-    /* REFERENCE
-    string.toCharArray(copy, 50);
-    msg.setAddress(dummieIp, 8001);
-    msg.beginMessage("opt");
-    msg.addArgInt32(x);
-    msg.addArgString(copy);
-    msg.addArgFloat(v2);
-    */
-    
+  
     
     
     delay(50);
   }
 }
-/*Uncomment for Version 2 - sends a UDP packet per pin.
-void sendUDP(int x, int pin){
-  float tag = pin/10.0; //0.2 for sensor 2
-  //char tagC[2];
-  //tagC = "s" + pin;
 
-  msg.addArgFloat(tag);
-  msg.addArgInt32(x);
-  Udp.beginPacket(Udp.remoteIP(), 8001);
-  Udp.oscWrite(&msg);
-  Udp.endPacket();
-  msg.flush();
-  
-}
-*/
 
 // Initializing the printWifiStatus() Function. ************************************
 void printWifiStatus() {
