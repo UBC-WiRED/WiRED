@@ -9,6 +9,8 @@
 #include <SPI.h>
 #include <WiFi101.h>
 #include <WiFiUdp.h>
+#include <Ethernet.h>
+
 
 #include "OSCMessage.h"
 
@@ -24,15 +26,17 @@ char ssid[] = "Hello World";
 char pass[] = "laptoporchestra491";
 unsigned int localPort = 3001;
 
-char packetBuffer[255];
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
 char ReplyBuffer[] = "acknowledge";
 
 //create new osc message
 OSCMessage msg;
 WiFiUDP Udp;
 
-int x = 0;
+int pinReading = 0;
 
+//Battery Pin 
+const int batteryPin = 5;
 
 //************************************************************setup
 void setup() {
@@ -81,17 +85,29 @@ void loop() {
     Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
-    int len = Udp.read(packetBuffer, 255);
+    Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+    String contents(packetBuffer);
+ 
+    int len = Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
     if (len > 0) packetBuffer[len] = 0;
     Serial.println("Contents:");
-    Serial.println(packetBuffer);
-
+    Serial.println(contents);
+    
     // send a reply, to the IP address and port that sent us the packet we received
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(ReplyBuffer);
     Udp.endPacket();
 
-    //turn LED on "Colour"
+    //TODO turn LED on "Colour"
+
+    if(contents == "battery"){
+      checkBattery();
+    }
+  
+
+
+
+    
   }
 
   //start sending the value when we know the IP Address of the machine.
@@ -99,28 +115,19 @@ void loop() {
 
     msg.beginMessage("sensors");
     for(int pin = 1; pin <= 2; pin++){
-    x = analogRead(pin);
-    msg.addArgInt32(x);
+    pinReading = analogRead(pin);
+    msg.addArgInt32(pinReading);
     }
-    
+    sendUDP();
+    delay(50);
+  }
+}
+
+void sendUDP(){
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&msg);
     Udp.endPacket();
     msg.flush();
-    
-    
-    delay(50);
-  }
-}
-/*Uncomment for Version 2 - sends a UDP packet per pin.*/
-void sendUDP(int x){
-
-  msg.addArgInt32(x);
-  Udp.beginPacket(Udp.remoteIP(), 8001);
-  Udp.oscWrite(&msg);
-  Udp.endPacket();
-  msg.flush();
-  
 }
 
 
@@ -165,5 +172,27 @@ void connectToWifi() {
   Udp.begin(localPort);
 }
 
+
+void checkBattery(){
+    
+    int batteryLevel = analogRead(batteryPin);
+
+    Serial.print("Battery level: ");
+   
+    OSCMessage batLevel;
+    float tag = 0.5;
+    batteryLevel = batteryLevel / 1000.0;
+     Serial.println(batteryLevel);
+
+    batLevel.addArgFloat(tag);
+    batLevel.addArgInt32(batteryLevel);
+    Udp.beginPacket(Udp.remoteIP(), 8001);
+    Udp.oscWrite(&batLevel);
+    Udp.endPacket();
+    msg.flush();
+  
+  sendUDP();
+
+}
 
 
