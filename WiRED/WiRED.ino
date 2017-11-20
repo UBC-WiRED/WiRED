@@ -17,6 +17,8 @@ int status = WL_IDLE_STATUS;
 
 int keyIndex = 0;
 
+IPAddress ip(192, 168, 0, 119); 
+
 //Max,msp computer must be in the same network as below
 char ssid[] = "Hello World";
 char pass[] = "laptoporchestra491";
@@ -31,9 +33,6 @@ WiFiUDP Udp;
 
 int x = 0;
 
-//microcontroller WiFi setup
-IPAddress IP(198,168,0,119);
-
 
 //************************************************************setup
 void setup() {
@@ -41,14 +40,15 @@ void setup() {
 
   //Comment below when powered by battery.
   while (!Serial) {
-    // wait for serial port to connect.
+    ; // wait for serial port to connect.
   }
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WIFI SHIELD NOT PRESENT");
+    Serial.println("NOT PRESENT");
     return; // don't continue
   }
+
 
   connectToWifi();
 }
@@ -101,21 +101,26 @@ void loop() {
     for(int pin = 1; pin <= 2; pin++){
     x = analogRead(pin);
     msg.addArgInt32(x);
-
-
+    }
+    
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&msg);
     Udp.endPacket();
     msg.flush();
     
-
-    
-    }
-  
-    
     
     delay(50);
   }
+}
+/*Uncomment for Version 2 - sends a UDP packet per pin.*/
+void sendUDP(int x){
+
+  msg.addArgInt32(x);
+  Udp.beginPacket(Udp.remoteIP(), 8001);
+  Udp.oscWrite(&msg);
+  Udp.endPacket();
+  msg.flush();
+  
 }
 
 
@@ -127,7 +132,7 @@ void printWifiStatus() {
 
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("WiFi Shield IP Address: ");
+  Serial.print("IP Address: ");
   Serial.println(ip);
 
   // print the received signal strength:
@@ -144,13 +149,9 @@ void connectToWifi() {
   while ( status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
-
-    
-    
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
-    WiFi.config(IP);
-
+    WiFi.config(ip);
     // wait 10 seconds for connection:
     delay(10000);
   }
@@ -158,11 +159,11 @@ void connectToWifi() {
   printWifiStatus();
 
   Serial.println("\nStarting connection to server...");
+  Serial.println(WiFi.localIP());
   
   // if you get a connection, report back via serial:
   Udp.begin(localPort);
 }
-
 
 
 
