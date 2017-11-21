@@ -7,7 +7,7 @@
 			"revision" : 2
 		}
 ,
-		"rect" : [ 40.0, 110.0, 1920.0, 1029.0 ],
+		"rect" : [ 108.0, 69.0, 1920.0, 1029.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -27,6 +27,20 @@
 		"digest" : "",
 		"tags" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-10",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 452.0, 121.0, 50.0, 18.0 ],
+					"text" : "294"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
@@ -66,21 +80,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 637.5, 682.0, 47.0, 18.0 ],
+					"patching_rect" : [ 438.25, 477.0, 47.0, 18.0 ],
 					"text" : "battery"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial",
-					"fontsize" : 12.0,
-					"id" : "obj-9",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 563.5, 713.0, 166.0, 20.0 ],
-					"text" : "udpsend 192.168.0.119 3001"
 				}
 
 			}
@@ -93,7 +94,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 563.5, 625.75, 32.5, 32.5 ],
+					"patching_rect" : [ 438.25, 417.0, 32.5, 32.5 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 278.0, 241.5, 32.5, 32.5 ]
 				}
@@ -139,7 +140,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 22.5, 563.0, 185.0, 18.0 ],
-					"text" : "6."
+					"text" : "307."
 				}
 
 			}
@@ -732,7 +733,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 513.5, 561.0, 166.0, 20.0 ],
+					"patching_rect" : [ 513.5, 588.0, 166.0, 20.0 ],
 					"text" : "udpsend 192.168.0.119 3001"
 				}
 
@@ -825,11 +826,11 @@
 					"fontsize" : 12.0,
 					"id" : "obj-22",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 73.5, 62.0, 83.0, 20.0 ],
-					"text" : "route sensors"
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 73.5, 62.0, 123.0, 20.0 ],
+					"text" : "route sensors battery"
 				}
 
 			}
@@ -1164,10 +1165,19 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-9", 0 ],
+					"destination" : [ "obj-30", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-21", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 1 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-22", 1 ]
 				}
 
 			}
