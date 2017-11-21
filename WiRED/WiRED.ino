@@ -178,16 +178,13 @@ void checkBattery(){
     int batteryLevel = analogRead(batteryPin);
 
     Serial.print("Battery level: ");
-   
-    OSCMessage batLevel;
-    float tag = 0.5;
-    batteryLevel = batteryLevel / 1000.0;
-     Serial.println(batteryLevel);
-
-    batLevel.addArgFloat(tag);
-    batLevel.addArgInt32(batteryLevel);
+    Serial.println(batteryLevel);
+    
+    OSCMessage batLevelMSG;
+    batLevelMSG.beginMessage("battery");
+    batLevelMSG.addArgInt32(batteryLevel);
     Udp.beginPacket(Udp.remoteIP(), 8001);
-    Udp.oscWrite(&batLevel);
+    Udp.oscWrite(&batLevelMSG);
     Udp.endPacket();
     msg.flush();
   
