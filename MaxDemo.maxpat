@@ -30,13 +30,56 @@
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
+					"id" : "obj-32",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 389.5, 476.0, 63.0, 18.0 ],
+					"text" : "baudRate"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.913725, 0.913725, 0.913725, 0.74902 ],
+					"fgcolor" : [ 1.0, 0.5, 0.0, 1.0 ],
+					"id" : "obj-33",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 389.5, 417.0, 32.5, 32.5 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 293.0, 256.5, 32.5, 32.5 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-13",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 528.0, 103.0, 50.0, 18.0 ],
+					"text" : "9600"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
 					"id" : "obj-10",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 452.0, 121.0, 50.0, 18.0 ],
-					"text" : "294"
+					"text" : "300"
 				}
 
 			}
@@ -80,7 +123,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 438.25, 477.0, 47.0, 18.0 ],
+					"patching_rect" : [ 466.5, 476.0, 47.0, 18.0 ],
 					"text" : "battery"
 				}
 
@@ -94,7 +137,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 438.25, 417.0, 32.5, 32.5 ],
+					"patching_rect" : [ 466.5, 417.0, 32.5, 32.5 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 278.0, 241.5, 32.5, 32.5 ]
 				}
@@ -140,7 +183,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 22.5, 563.0, 185.0, 18.0 ],
-					"text" : "307."
+					"text" : "304."
 				}
 
 			}
@@ -826,11 +869,11 @@
 					"fontsize" : 12.0,
 					"id" : "obj-22",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 3,
-					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 73.5, 62.0, 123.0, 20.0 ],
-					"text" : "route sensors battery"
+					"numinlets" : 4,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 73.5, 62.0, 179.0, 20.0 ],
+					"text" : "route sensors battery baudRate"
 				}
 
 			}
@@ -1183,6 +1226,15 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-13", 1 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-22", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -1299,6 +1351,24 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-30", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-33", 0 ]
 				}
 
 			}
