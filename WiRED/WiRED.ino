@@ -183,14 +183,15 @@ void connectToWifi() {
 
 void checkBattery(){
     
-    int batteryLevel = analogRead(batteryPin);
+    float batteryVoltage = (analogRead(batteryPin)*(5.0*2/1023.0));
+    float batteryLevel = 100 *(batteryVoltage - 3)/1.2;
 
     Serial.print("Battery level: ");
     Serial.println(batteryLevel);
     
     OSCMessage batLevelMSG;
     batLevelMSG.beginMessage("battery");
-    batLevelMSG.addArgInt32(batteryLevel);
+    batLevelMSG.addArgFloat(batteryLevel);
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&batLevelMSG);
     Udp.endPacket();
