@@ -15,6 +15,10 @@
 #include "OSCMessage.h"
 
 //************************************************************
+//Constants
+const int baud_rate = 9600;
+
+
 int status = WL_IDLE_STATUS;
 
 int keyIndex = 0;
@@ -40,7 +44,7 @@ const int batteryPin = 5;
 
 //************************************************************setup
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(baud_rate);
 
   //Comment below when powered by battery.
   while (!Serial) {
@@ -102,6 +106,10 @@ void loop() {
 
     if(contents == "battery"){
       checkBattery();
+    }
+
+    if(contents == "baudRate") {
+      checkBaudRate();
     }
   
 
@@ -192,4 +200,22 @@ void checkBattery(){
 
 }
 
+void checkBaudRate() {
+  
+  Serial.print("Baud Rate: ");
+  Serial.println(baud_rate);
+
+  OSCMessage baudRateMSG;
+  baudRateMSG.beginMessage("baudRate");
+  baudRateMSG.addArgInt32(baud_rate);
+
+ Udp.beginPacket(Udp.remoteIP(), 8001);
+  Udp.oscWrite(&baudRateMSG);
+  Udp.endPacket();
+  msg.flush();
+  
+  sendUDP();
+
+
+}
 
