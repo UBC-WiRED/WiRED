@@ -44,12 +44,16 @@ const int batteryPin = 5;
 
 //************************************************************setup
 void setup() {
+
+
+  pinMode(6,OUTPUT); //LED
+  
   Serial.begin(baud_rate);
 
-  //Comment below when powered by battery.
-  while (!Serial) {
+  //Comment out below when powered by battery.
+ /* while (!Serial) {
     ; // wait for serial port to connect.
-  }
+  }*/
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -157,9 +161,18 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
+void blinkLED() {
+  for(int i = 0; i < 10; i++){
+    digitalWrite(6, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(500);              // wait for 500ms
+    digitalWrite(6, LOW);    // turn the LED off by making the voltage LOW
+    delay(500);              // wait for 500ms  
+  }
+  
+}
+
 // Initializing the printWifiStatus() Function. ************************************
 void connectToWifi() {
-  
   // attempt to connect to WiFi network:
   while ( status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
@@ -168,8 +181,13 @@ void connectToWifi() {
     status = WiFi.begin(ssid, pass);
     WiFi.config(ip);
     // wait 10 seconds for connection:
-    delay(10000);
+   //delay(10000);
+    blinkLED();
+    
   }
+
+  digitalWrite(6, HIGH);   // turn the LED on (HIGH is the voltage level)
+  
   Serial.println("Connected to wifi");
   printWifiStatus();
 
@@ -183,9 +201,11 @@ void connectToWifi() {
 
 void checkBattery(){
     
-    float batteryVoltage = (analogRead(batteryPin)*(5.0*2/1023.0));
+    float batteryVoltage = (analogRead(batteryPin)*(3.3*2/1023.0));
     float batteryLevel = 100 *(batteryVoltage - 3)/1.2;
 
+    Serial.print("Battery voltage: ");
+    Serial.println(batteryVoltage);
     Serial.print("Battery level: ");
     Serial.println(batteryLevel);
     
