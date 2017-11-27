@@ -40,7 +40,7 @@ WiFiUDP Udp;
 int pinReading = 0;
 
 //Battery Pin 
-const int batteryPin = 5;
+const int batteryPin = 0;
 
 //************************************************************setup
 void setup() {
@@ -69,7 +69,7 @@ void setup() {
 //************************************************************loop
 void loop() {
 
-  if ( status != WL_CONNECTED){
+  if ( WiFi.status() != WL_CONNECTED){
     Serial.println("Connection to SSID lost");
     //turn LED to Red.
     //try reconnecting
@@ -126,7 +126,7 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 2; pin++){
+    for(int pin = 2; pin <= 5; pin++){
     pinReading = analogRead(pin);
     msg.addArgInt32(pinReading);
     }
@@ -173,12 +173,17 @@ void blinkLED() {
 
 // Initializing the printWifiStatus() Function. ************************************
 void connectToWifi() {
+
+  digitalWrite(6, LOW);    // turn the LED off by making the voltage LOW
+    
   // attempt to connect to WiFi network:
-  while ( status != WL_CONNECTED) {
+  while ( WiFi.status() != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
+    WiFi.begin(ssid, pass);
+
+    //Config the ip address of this WM
     WiFi.config(ip);
     // wait 10 seconds for connection:
    //delay(10000);
