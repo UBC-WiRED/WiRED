@@ -35,6 +35,7 @@ char ReplyBuffer[] = "acknowledge";
 
 //create new osc message
 OSCMessage msg;
+OSCMessage resp;
 WiFiUDP Udp;
 
 int pinReading = 0;
@@ -100,6 +101,8 @@ void loop() {
     if (len > 0) packetBuffer[len] = 0;
     Serial.println("Contents:");
     Serial.println(contents);
+
+    
     
     // send a reply, to the IP address and port that sent us the packet we received
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
@@ -115,6 +118,10 @@ void loop() {
     if(contents == "baudRate") {
       checkBaudRate();
     }
+
+    if(contents == "connect") {
+      sendConnectedMSG();
+    }
   
 
 
@@ -126,7 +133,7 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 2; pin <= 5; pin++){
+    for(int pin = 1; pin <= 4; pin++){
     pinReading = analogRead(pin);
     msg.addArgInt32(pinReading);
     }
@@ -220,7 +227,7 @@ void checkBattery(){
     Udp.beginPacket(Udp.remoteIP(), 8001);
     Udp.oscWrite(&batLevelMSG);
     Udp.endPacket();
-    msg.flush();
+    batLevelMSG.flush();
   
   sendUDP();
 
@@ -238,7 +245,24 @@ void checkBaudRate() {
  Udp.beginPacket(Udp.remoteIP(), 8001);
   Udp.oscWrite(&baudRateMSG);
   Udp.endPacket();
-  msg.flush();
+  baudRateMSG.flush();
+  
+  sendUDP();
+
+
+}
+
+
+void sendConnectedMSG() {
+
+  OSCMessage connectedMSG;
+  connectedMSG.beginMessage("wmmsgreceived");
+  connectedMSG.addArgInt32(1);
+
+  Udp.beginPacket(Udp.remoteIP(), 8001);
+  Udp.oscWrite(&connectedMSG);
+  Udp.endPacket();
+  connectedMSG.flush();
   
   sendUDP();
 
