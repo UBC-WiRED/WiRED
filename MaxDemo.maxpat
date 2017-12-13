@@ -7,7 +7,7 @@
 			"revision" : 2
 		}
 ,
-		"rect" : [ 93.0, 80.0, 1920.0, 1029.0 ],
+		"rect" : [ 49.0, 68.0, 1920.0, 1029.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -31,13 +31,32 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"frgb" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"id" : "obj-35",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 94.5, 773.0, 150.0, 103.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 6,
+					"presentation_rect" : [ 258.75, 300.75, 222.0, 89.0 ],
+					"text" : "Instruction:\n1. Enter IP and port number of the WM, set the address with the correspondng buttons\n2. Click the Red button to make a connection",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"frgb" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"id" : "obj-25",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 79.5, 758.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 76.333328, 351.25, 156.166672, 20.0 ],
+					"presentation_rect" : [ 76.333328, 335.25, 156.166672, 20.0 ],
 					"text" : "Set  MAverage rate to 10",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -239,7 +258,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1159.0, 302.25, 20.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 265.0, 289.25, 28.5, 28.5 ]
+					"presentation_rect" : [ 265.0, 264.5, 28.5, 28.5 ]
 				}
 
 			}
@@ -321,7 +340,7 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 999.5, 12.25, 40.0, 40.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 37.5, 345.5, 31.5, 31.5 ]
+					"presentation_rect" : [ 37.5, 329.5, 31.5, 31.5 ]
 				}
 
 			}
@@ -379,7 +398,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 324.0, 204.0, 143.0, 18.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 198.5, 299.75, 50.0, 18.0 ],
+					"presentation_rect" : [ 190.5, 285.25, 50.0, 18.0 ],
 					"text" : "71.51"
 				}
 
@@ -395,7 +414,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 49.5, 728.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 309.0, 289.25, 127.5, 20.0 ],
+					"presentation_rect" : [ 306.0, 264.5, 127.5, 20.0 ],
 					"text" : "Connected with WM",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -413,7 +432,7 @@
 					"patching_rect" : [ 64.5, 743.0, 150.0, 20.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 76.333328, 299.75, 102.5, 34.0 ],
+					"presentation_rect" : [ 76.333328, 285.25, 102.5, 34.0 ],
 					"text" : "Query Battery Percentage",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -430,7 +449,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 49.5, 728.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 76.333328, 264.5, 102.5, 20.0 ],
+					"presentation_rect" : [ 76.333328, 249.5, 102.5, 20.0 ],
 					"text" : "Query Baud Rate",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -580,7 +599,7 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 389.5, 417.0, 32.5, 32.5 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 37.5, 299.75, 32.5, 32.5 ]
+					"presentation_rect" : [ 37.5, 285.25, 32.5, 32.5 ]
 				}
 
 			}
@@ -595,7 +614,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 528.0, 103.0, 50.0, 18.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 198.5, 264.5, 50.0, 18.0 ],
+					"presentation_rect" : [ 190.5, 249.5, 50.0, 18.0 ],
 					"text" : "9600"
 				}
 
@@ -640,7 +659,7 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 466.5, 417.0, 32.5, 32.5 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 37.5, 258.25, 32.5, 32.5 ]
+					"presentation_rect" : [ 37.5, 243.25, 32.5, 32.5 ]
 				}
 
 			}
@@ -669,7 +688,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 627.5, 467.0, 143.0, 18.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 399.0, 46.0, 88.0, 18.0 ],
+					"presentation_rect" : [ 405.5, 46.0, 92.5, 18.0 ],
 					"text" : "192.168.0.119"
 				}
 
@@ -816,7 +835,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 882.0, 302.25, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 263.0, 161.0, 88.0, 20.0 ],
+					"presentation_rect" : [ 263.0, 146.0, 88.0, 20.0 ],
 					"text" : "Current Port",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -833,7 +852,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 778.0, 269.75, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 309.0, 200.5, 83.0, 20.0 ],
+					"presentation_rect" : [ 309.0, 180.5, 83.0, 20.0 ],
 					"text" : "Set New Port",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -863,7 +882,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 466.5, 222.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 313.5, 120.0, 120.0, 20.0 ],
+					"presentation_rect" : [ 316.5, 108.0, 120.0, 20.0 ],
 					"text" : "Set New IP Address ",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -880,7 +899,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 34.5, 713.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 309.0, 244.25, 102.5, 20.0 ],
+					"presentation_rect" : [ 309.0, 223.5, 102.5, 20.0 ],
 					"text" : "Make connection",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -995,7 +1014,7 @@
 					"outlinecolor" : [ 0.654902, 0.654902, 0.654902, 1.0 ],
 					"patching_rect" : [ 768.0, 302.25, 32.5, 32.5 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 263.0, 194.25, 32.5, 32.5 ]
+					"presentation_rect" : [ 263.0, 174.25, 32.5, 32.5 ]
 				}
 
 			}
@@ -1010,7 +1029,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 778.0, 512.0, 50.0, 18.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 367.5, 161.0, 66.0, 18.0 ],
+					"presentation_rect" : [ 432.0, 146.0, 66.0, 18.0 ],
 					"text" : "port 0"
 				}
 
@@ -1041,7 +1060,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 822.5, 314.75, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 407.0, 200.5, 50.0, 20.0 ]
+					"presentation_rect" : [ 432.0, 180.5, 50.0, 20.0 ]
 				}
 
 			}
@@ -1055,7 +1074,7 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 584.0, 284.75, 32.5, 32.5 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 263.0, 113.75, 32.5, 32.5 ]
+					"presentation_rect" : [ 263.0, 101.75, 32.5, 32.5 ]
 				}
 
 			}
@@ -1153,7 +1172,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 814.5, 88.75, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 445.5, 85.0, 50.0, 20.0 ]
+					"presentation_rect" : [ 448.0, 75.0, 50.0, 20.0 ]
 				}
 
 			}
@@ -1170,7 +1189,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 750.5, 88.75, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 383.5, 85.0, 50.0, 20.0 ]
+					"presentation_rect" : [ 386.5, 75.0, 50.0, 20.0 ]
 				}
 
 			}
@@ -1187,7 +1206,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 686.5, 88.75, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 325.5, 85.0, 50.0, 20.0 ]
+					"presentation_rect" : [ 325.5, 75.0, 50.0, 20.0 ]
 				}
 
 			}
@@ -1204,7 +1223,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 623.0, 88.75, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 263.0, 85.0, 50.0, 20.0 ]
+					"presentation_rect" : [ 263.0, 75.0, 50.0, 20.0 ]
 				}
 
 			}
@@ -1261,7 +1280,7 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 513.5, 284.75, 32.5, 32.5 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 263.0, 244.25, 32.5, 32.5 ]
+					"presentation_rect" : [ 263.0, 217.25, 32.5, 32.5 ]
 				}
 
 			}
@@ -1552,7 +1571,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 34.5, 659.0, 128.0, 128.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 15.5, 29.0, 497.5, 363.0 ],
+					"presentation_rect" : [ 17.5, 37.0, 495.5, 363.0 ],
 					"rounded" : 45
 				}
 
