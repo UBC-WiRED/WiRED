@@ -51,11 +51,6 @@ void setup() {
   
   Serial.begin(baud_rate);
 
-  //Comment out below when powered by battery.
- /* while (!Serial) {
-    ; // wait for serial port to connect.
-  }*/
-
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
     Serial.println("NOT PRESENT");
