@@ -1,8 +1,8 @@
 /*
- * MKR1000_UDP_Multiread
+ * WiRED Project
  * Base Source: https://www.arduino.cc/en/Tutorial/Wifi101WiFiUdpSendReceiveString
- * Editor: (Kyung)Jin Han
- * Description: This code takes the values coming from ADC ports (A1-6), encode them in OSC bytes.
+ * Author: UBC EECE Capstone Group 93
+ * Description: This code takes the values coming from ADC pins (A1-6), encode them in OSC bytes.
  *              OSC data is then sent to the remote computer in the same network as MKR1000 by UDP.
  * Library: Modified WiFi101 library (includes OSC objects).
  */
@@ -17,6 +17,15 @@
 //************************************************************
 //Constants
 const int baud_rate = 9600;
+
+//Values for measuring resistance
+int raw= 0;
+int Vin= 3.3;
+float Vout= 0;
+float R1= 3000;
+float R2= 0;
+float buffer= 0;
+
 
 
 int status = WL_IDLE_STATUS;
@@ -42,6 +51,7 @@ int pinReading = 0;
 
 //Battery Pin 
 const int batteryPin = 0;
+
 
 //************************************************************setup
 void setup() {
@@ -128,10 +138,25 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 4; pin++){
-    pinReading = analogRead(pin);
+    for(int pin = 1; pin <= 5; pin++){
+      pinReading = analogRead(pin);
+      if(pin == 5) {
+        raw = pinReading;
+        buffer= raw * Vin;
+        Vout= (buffer)/1024.0;
+        buffer= (Vin/Vout) -1;
+        pinReading= R1 * buffer;
+        Serial.print("Vout: ");
+        Serial.println(Vout);
+        Serial.print("R2: ");
+        Serial.println(pinReading);
+      }
+    
+    
     msg.addArgInt32(pinReading);
     }
+    //Serial.println(analogRead(3));
+    
     sendUDP();
     delay(50);
   }
