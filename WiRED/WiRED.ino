@@ -138,9 +138,9 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 5; pin++){
+    for(int pin = 1; pin <= 5; pin++){ 
       pinReading = analogRead(pin);
-      if(pin == 5) {
+      if(pin == 5) {//pin 5 is for reading resistance see  http://www.circuitbasics.com/arduino-ohm-meter/
         raw = pinReading;
         buffer= raw * Vin;
         Vout= (buffer)/1024.0;
