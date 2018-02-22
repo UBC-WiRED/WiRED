@@ -18,16 +18,27 @@
 //Constants
 const int baud_rate = 9600;
 
-//Values for measuring resistance
+//Settings for measuring resistance
 int raw= 0;
 int Vin= 3.3;
-float Vout= 0;
-float R1= 3000;
-float R2= 0;
+float VSensor= 0;
+float RKnown= 3000; //change RKnown to the PULL up resistor resistance
+float RSensor= 0;
 float buffer= 0;
 
+//Settings for reading from the multiplexer
+//ref: https://github.com/VRomanov89/AnalogMultiplexing/blob/master/AnalogMultiplexing/AnalogMultiplexing.ino
 
+int pin_Out_S0 = 8;
+int pin_Out_S1 = 9;
+int pin_Out_S2 = 10;
+int pin_In_Mux = A6;
+//Use two voltage divider for testing.
+int mux_channel_y4 = 4;
+int mux_channel_y6 = 6;
+ 
 
+// Settings or WiFi connection
 int status = WL_IDLE_STATUS;
 
 int keyIndex = 0;
@@ -58,17 +69,25 @@ void setup() {
 
 
   pinMode(6,OUTPUT); //LED
+  mux_setup(); //multiplexer select channel
   
   Serial.begin(baud_rate);
 
-  // check for the presence of the shield:
+  // check if the wifi shield is available:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("NOT PRESENT");
-    return; // don't continue
+    Serial.println("WIFI SHIELD NOT AVAILABLE");
+    return; 
   }
 
 
   connectToWifi();
+}
+
+//************************************************************multiplexer select channel setup
+void mux_setup() {
+  pinMode(pin_Out_S0, OUTPUT);
+  pinMode(pin_Out_S1, OUTPUT);
+  pinMode(pin_Out_S2, OUTPUT);
 }
 
 
@@ -139,21 +158,42 @@ void loop() {
 
     msg.beginMessage("sensors");
     for(int pin = 1; pin <= 5; pin++){ 
-      pinReading = analogRead(pin);
+      
+      /*
       if(pin == 5) {//pin 5 is for reading resistance see  http://www.circuitbasics.com/arduino-ohm-meter/
         raw = pinReading;
         buffer= raw * Vin;
-        Vout= (buffer)/1024.0;
-        buffer= (Vin/Vout) -1;
-        pinReading= R1 * buffer;
-        Serial.print("Vout: ");
-        Serial.println(Vout);
-        Serial.print("R2: ");
+        VSensor= (buffer)/1024.0;
+        buffer= (Vin/VSensor) -1;
+        pinReading= RKnown * buffer;
+        msg.addArgInt32(pinReading);
+
+        Serial.print("VSensor: ");
+        Serial.println(VSensor);
+        Serial.print("RSensor: ");
         Serial.println(pinReading);
       }
+      */
+
+      if(pin == 6) { //MUX reading
+       pinReading = read_mux(mux_channel_y4);
+       // msg.addArgInt32(pinReading);
+
+       //modification is required on the MaxDemo.msp side to reflect this sensor reading
+       Serial.print("mux channel y4: ");
+       Serial.println(pinReading);
+
+       pinReading = read_mux(mux_channel_y6);
+       Serial.print("mux channel y6: ");
+       Serial.println(pinReading);
+        
+      }
+      else {
+       pinReading = analogRead(pin);
+       msg.addArgInt32(pinReading);
+      }
     
-    
-    msg.addArgInt32(pinReading);
+   
     }
     //Serial.println(analogRead(3));
     
@@ -287,5 +327,18 @@ void sendConnectedMSG() {
   sendUDP();
 
 
+}
+
+
+int read_mux(int channel){
+
+    //convert the int channel number to binary
+    //then sets the mux to read from the corresponding channel
+    digitalWrite(pin_Out_S0, HIGH && (channel & B00000001));
+    digitalWrite(pin_Out_S1, HIGH && (channel & B00000010));
+    digitalWrite(pin_Out_S2, HIGH && (channel & B00000100));
+    
+    return analogRead(pin_In_Mux);
+  
 }
 
