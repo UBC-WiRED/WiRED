@@ -157,7 +157,7 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 5; pin++){ 
+    for(int pin = 1; pin <= 6; pin++){ 
       
       /*
       if(pin == 5) {//pin 5 is for reading resistance see  http://www.circuitbasics.com/arduino-ohm-meter/
