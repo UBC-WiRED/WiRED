@@ -7,7 +7,7 @@
 			"revision" : 2
 		}
 ,
-		"rect" : [ 350.0, 170.0, 1568.0, 891.0 ],
+		"rect" : [ 409.0, 88.0, 1568.0, 891.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -152,6 +152,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 457.5, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 458.0, 253.0, 35.0, 20.0 ],
 					"text" : "s S8"
 				}
 
@@ -165,6 +167,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 403.833313, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 403.333313, 254.0, 35.0, 20.0 ],
 					"text" : "s S7"
 				}
 
@@ -178,6 +182,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 350.166656, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 347.666656, 253.0, 35.0, 20.0 ],
 					"text" : "s S6"
 				}
 
@@ -191,6 +197,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 297.5, 467.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 293.0, 253.0, 35.0, 20.0 ],
 					"text" : "s S5"
 				}
 
@@ -1383,6 +1391,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 234.5, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 235.0, 253.0, 35.0, 20.0 ],
 					"text" : "s S4"
 				}
 
@@ -1396,6 +1406,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 180.833328, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 178.333328, 253.0, 35.0, 20.0 ],
 					"text" : "s S3"
 				}
 
@@ -1409,6 +1421,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 127.166656, 465.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 122.666656, 253.0, 35.0, 20.0 ],
 					"text" : "s S2"
 				}
 
@@ -1422,6 +1436,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 73.5, 467.0, 35.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 67.0, 253.0, 35.0, 20.0 ],
 					"text" : "s S1"
 				}
 
