@@ -1,5 +1,6 @@
 /*
  * WiRED Project
+ * Date: Feb 2018
  * Base Source: https://www.arduino.cc/en/Tutorial/Wifi101WiFiUdpSendReceiveString
  * Author: UBC EECE Capstone Group 93
  * Description: This code takes the values coming from ADC pins (A1-6), encode them in OSC bytes.
@@ -34,8 +35,15 @@ int pin_Out_S1 = 9;
 int pin_Out_S2 = 10;
 int pin_In_Mux = A6;
 //Use two voltage divider for testing.
+int mux_channel_y0 = 0;
+int mux_channel_y1 = 1; 
+int mux_channel_y2 = 2;
+int mux_channel_y3 = 3;
 int mux_channel_y4 = 4;
+int mux_channel_y5 = 5; 
 int mux_channel_y6 = 6;
+int mux_channel_y7 = 7; 
+
  
 
 // Settings or WiFi connection
@@ -157,45 +165,13 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 6; pin++){ 
-      
-      /*
-      if(pin == 5) {//pin 5 is for reading resistance see  http://www.circuitbasics.com/arduino-ohm-meter/
-        raw = pinReading;
-        buffer= raw * Vin;
-        VSensor= (buffer)/1024.0;
-        buffer= (Vin/VSensor) -1;
-        pinReading= RKnown * buffer;
-        msg.addArgInt32(pinReading);
-
-        Serial.print("VSensor: ");
-        Serial.println(VSensor);
-        Serial.print("RSensor: ");
-        Serial.println(pinReading);
-      }
-      */
-
-      if(pin == 6) { //MUX reading
-       pinReading = read_mux(mux_channel_y4);
-       // msg.addArgInt32(pinReading);
-
-       //modification is required on the MaxDemo.msp side to reflect this sensor reading
-       Serial.print("mux channel y4: ");
-       Serial.println(pinReading);
-
-       pinReading = read_mux(mux_channel_y6);
-       Serial.print("mux channel y6: ");
-       Serial.println(pinReading);
-        
-      }
-      else {
-       pinReading = analogRead(pin);
-       msg.addArgInt32(pinReading);
-      }
-    
-   
+    for(int mux_pin = 0; mux_pin <= 7; mux_pin++){ 
+      pinReading = read_mux(mux_pin);
+      msg.addArgInt32(pinReading);   
+      Serial.print(pinReading);
+      Serial.print(", ");
     }
-    //Serial.println(analogRead(3));
+    Serial.println("");
     
     sendUDP();
     delay(50);
