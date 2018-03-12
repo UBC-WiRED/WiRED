@@ -30,9 +30,9 @@ float buffer= 0;
 //Settings for reading from the multiplexer
 //ref: https://github.com/VRomanov89/AnalogMultiplexing/blob/master/AnalogMultiplexing/AnalogMultiplexing.ino
 
-int pin_Out_S0 = 8;
-int pin_Out_S1 = 9;
-int pin_Out_S2 = 10;
+int pin_Out_S0 = 1;
+int pin_Out_S1 = 2;
+int pin_Out_S2 = 3;
 int pin_In_Mux = A6;
 //Use two voltage divider for testing.
 int mux_channel_y0 = 0;
@@ -43,6 +43,8 @@ int mux_channel_y4 = 4;
 int mux_channel_y5 = 5; 
 int mux_channel_y6 = 6;
 int mux_channel_y7 = 7; 
+
+
 
  
 
