@@ -1,10 +1,6 @@
-/*
- * WiRED Project
- * Date: Feb 2018
- * Base Source: https://www.arduino.cc/en/Tutorial/Wifi101WiFiUdpSendReceiveString
- * Author: UBC EECE Capstone Group 93
- * Description: This code takes the values coming from ADC pins (A1-6), encode them in OSC bytes.
- *              OSC data is then sent to the remote computer in the same network as MKR1000 by UDP.
+/* Date Created: March 19th, 2018
+ * Purpose: Read input from four sensors RUBS  
+ * Author: ECE CAPSTONE GROUP 93 
  * Library: Modified WiFi101 library (includes OSC objects).
  */
 #include <SPI.h>
@@ -19,41 +15,14 @@
 //Constants
 const int baud_rate = 9600;
 
-//Settings for measuring resistance
-int raw= 0;
-int Vin= 3.3;
-float VSensor= 0;
-float RKnown= 3000; //change RKnown to the PULL up resistor resistance
-float RSensor= 0;
-float buffer= 0;
 
-//Settings for reading from the multiplexer
-//ref: https://github.com/VRomanov89/AnalogMultiplexing/blob/master/AnalogMultiplexing/AnalogMultiplexing.ino
-
-int pin_Out_S0 = 1;
-int pin_Out_S1 = 2;
-int pin_Out_S2 = 3;
-int pin_In_Mux = A2;
-
-int mux_channel_y0 = 0;
-int mux_channel_y1 = 1; 
-int mux_channel_y2 = 2;
-int mux_channel_y3 = 3;
-int mux_channel_y4 = 4;
-int mux_channel_y5 = 5; 
-int mux_channel_y6 = 6;
-int mux_channel_y7 = 7; 
-
-
-
- 
-
-// Settings or WiFi connection
 int status = WL_IDLE_STATUS;
 
 int keyIndex = 0;
 
 IPAddress ip(192, 168, 0, 119); 
+
+int pc_port = 8001;
 
 //Max,msp computer must be in the same network as below
 char ssid[] = "Hello World";
@@ -73,31 +42,22 @@ int pinReading = 0;
 //Battery Pin 
 const int batteryPin = 0;
 
-
 //************************************************************setup
 void setup() {
 
 
   pinMode(6,OUTPUT); //LED
-  mux_setup(); //multiplexer select channel
   
   Serial.begin(baud_rate);
 
-  // check if the wifi shield is available:
+  // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WIFI SHIELD NOT AVAILABLE");
-    return; 
+    Serial.println("NOT PRESENT");
+    return; // don't continue
   }
 
 
   connectToWifi();
-}
-
-//************************************************************multiplexer select channel setup
-void mux_setup() {
-  pinMode(pin_Out_S0, OUTPUT);
-  pinMode(pin_Out_S1, OUTPUT);
-  pinMode(pin_Out_S2, OUTPUT);
 }
 
 
@@ -167,21 +127,17 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int mux_pin = 0; mux_pin <= 7; mux_pin++){ 
-      pinReading = read_mux(mux_pin);
-      msg.addArgInt32(pinReading);   
-      Serial.print(pinReading);
-      Serial.print(", ");
+    for(int pin = 1; pin <= 4; pin++){
+    pinReading = analogRead(pin);
+    msg.addArgInt32(pinReading);
     }
-    Serial.println("");
-    
     sendUDP();
     delay(50);
   }
 }
 
 void sendUDP(){
-    Udp.beginPacket(Udp.remoteIP(), 8001);
+    Udp.beginPacket(Udp.remoteIP(), pc_port);
     Udp.oscWrite(&msg);
     Udp.endPacket();
     msg.flush();
@@ -262,7 +218,7 @@ void checkBattery(){
     OSCMessage batLevelMSG;
     batLevelMSG.beginMessage("battery");
     batLevelMSG.addArgFloat(batteryLevel);
-    Udp.beginPacket(Udp.remoteIP(), 8001);
+    Udp.beginPacket(Udp.remoteIP(), pc_port);
     Udp.oscWrite(&batLevelMSG);
     Udp.endPacket();
     batLevelMSG.flush();
@@ -280,7 +236,7 @@ void checkBaudRate() {
   baudRateMSG.beginMessage("baudRate");
   baudRateMSG.addArgInt32(baud_rate);
 
- Udp.beginPacket(Udp.remoteIP(), 8001);
+ Udp.beginPacket(Udp.remoteIP(), pc_port);
   Udp.oscWrite(&baudRateMSG);
   Udp.endPacket();
   baudRateMSG.flush();
@@ -297,7 +253,7 @@ void sendConnectedMSG() {
   connectedMSG.beginMessage("wmmsgreceived");
   connectedMSG.addArgInt32(1);
 
-  Udp.beginPacket(Udp.remoteIP(), 8001);
+  Udp.beginPacket(Udp.remoteIP(), pc_port);
   Udp.oscWrite(&connectedMSG);
   Udp.endPacket();
   connectedMSG.flush();
@@ -305,18 +261,5 @@ void sendConnectedMSG() {
   sendUDP();
 
 
-}
-
-
-int read_mux(int channel){
-
-    //convert the int channel number to binary
-    //then sets the mux to read from the corresponding channel
-    digitalWrite(pin_Out_S0, HIGH && (channel & B00000001));
-    digitalWrite(pin_Out_S1, HIGH && (channel & B00000010));
-    digitalWrite(pin_Out_S2, HIGH && (channel & B00000100));
-    
-    return analogRead(pin_In_Mux);
-  
 }
 
