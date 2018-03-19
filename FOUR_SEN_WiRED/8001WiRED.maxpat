@@ -60,11 +60,11 @@
 					"fontsize" : 12.0,
 					"id" : "obj-60",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 4,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 554.0, 437.0, 132.0, 20.0 ],
-					"text" : "combine connect : port"
+					"patching_rect" : [ 554.0, 447.0, 139.0, 20.0 ],
+					"text" : "combine connect : port :"
 				}
 
 			}
@@ -1114,7 +1114,7 @@
 					"patching_rect" : [ 851.0, 504.0, 61.0, 18.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 432.0, 146.0, 66.0, 18.0 ],
-					"text" : "port 57"
+					"text" : "port 8005"
 				}
 
 			}
@@ -1366,8 +1366,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 522.5, 467.0, 83.0, 18.0 ],
-					"text" : "connect:57"
+					"patching_rect" : [ 539.0, 476.0, 118.0, 18.0 ],
+					"text" : "connect:8005:"
 				}
 
 			}

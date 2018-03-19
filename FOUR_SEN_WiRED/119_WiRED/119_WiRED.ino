@@ -115,7 +115,8 @@ void loop() {
       checkBaudRate();
     }
 
-    if(contents.indexOf("connect ") > 0) {
+    if(contents.indexOf("connect") > -1) {
+      Serial.println("found connect in contents");
       Serial.println(contents);
       
       //sendConnectedMSG();
@@ -125,9 +126,16 @@ void loop() {
         char *p = buf;
      
         
-      while((str = strtok_r(p," ", &p)) !=NULL){
+      //The last str is the port number
+      while((str = strtok_r(p,":", &p)) !=NULL){
+        Serial.println("str");
         Serial.println(str);
       }
+
+      
+
+      
+      
     }
 
     
