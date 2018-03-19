@@ -7,6 +7,8 @@
 #include <WiFi101.h>
 #include <WiFiUdp.h>
 #include <Ethernet.h>
+#include <Arduino.h>
+
 
 
 #include "OSCMessage.h"
@@ -113,10 +115,24 @@ void loop() {
       checkBaudRate();
     }
 
-    if(contents == "connect") {
-      sendConnectedMSG();
+    if(contents.indexOf("connect ") > 0) {
+      Serial.println(contents);
+      
+      //sendConnectedMSG();
+        char *str;
+        char buf[contents.length()];
+        contents.toCharArray(buf,sizeof(buf));
+        char *p = buf;
+     
+        
+      while((str = strtok_r(p," ", &p)) !=NULL){
+        Serial.println(str);
+      }
     }
-  
+
+    
+    
+
 
 
 
