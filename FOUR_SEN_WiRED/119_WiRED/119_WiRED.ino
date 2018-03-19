@@ -130,8 +130,13 @@ void loop() {
       while((str = strtok_r(p,":", &p)) !=NULL){
         Serial.println("str");
         Serial.println(str);
+        
       }
-
+      
+      pc_port = (int) str;
+      Serial.print("new pc port: ");
+      Serial.print(pc_port);
+      
       
 
       
