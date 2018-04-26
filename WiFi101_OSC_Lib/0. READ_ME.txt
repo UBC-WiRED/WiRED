@@ -1,0 +1,15 @@
+**********************************************************
+**********************************************************
+Date created: April 26, 2018
+Author: CPEN 491 team 93 
+Instructions for installing the OSC library code files
+ 1. Download the WiFI101 library from Arduino Library Manager  	
+ 2. Copy the code files in this folder to this path "yourlocalpath/Arduino/libraries/WiFi101/src"
+    See "library_file_path_windows" for an example of the path
+ 3. When promted, replace files from the downloaded library with the code files in this folder. 
+
+This library is needed for encoding UDP messages sent from Arduino into OSC 
+format, so that the Max program can read it.
+
+**********************************************************
+**********************************************************
