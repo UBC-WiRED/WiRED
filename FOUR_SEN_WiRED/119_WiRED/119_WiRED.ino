@@ -1,6 +1,8 @@
 /* Date Created: March 19th, 2018
  * Purpose: Read input from four sensors RUBS  
  * Author: ECE CAPSTONE GROUP 93 
+ * IP ADDRESS: 192.168.0.119
+ * PC_PORT: 8001
  * Library: Modified WiFi101 library (includes OSC objects).
  */
 #include <SPI.h>
@@ -19,8 +21,6 @@ const int baud_rate = 9600;
 
 
 int status = WL_IDLE_STATUS;
-
-int keyIndex = 0;
 
 IPAddress ip(192, 168, 0, 119); 
 
@@ -115,6 +115,11 @@ void loop() {
       checkBaudRate();
     }
 
+    if(contents == "connect") {
+      sendConnectedMSG();
+    }
+
+/** NOT IN USE: can be referenced for dynamically connecting different pc_port
     if(contents.indexOf("connect") > -1) {
       Serial.println("found connect in contents");
       Serial.println(contents);
@@ -137,7 +142,7 @@ void loop() {
       Serial.print("new pc port: ");
       Serial.print(pc_port);
       
-      
+  **/    
 
       
       

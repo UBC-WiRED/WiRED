@@ -1,8 +1,8 @@
 /* Date Created: March 19th, 2018
  * Purpose: Read input from four sensors RUBS  
- * IP ADDRESS: 192.168.0.120
- * PC_PORT: 8002
  * Author: ECE CAPSTONE GROUP 93 
+ * IP ADDRESS: 192.168.0.121
+ * PC_PORT: 8003
  * Library: Modified WiFi101 library (includes OSC objects).
  */
 #include <SPI.h>
@@ -17,11 +17,39 @@
 //Constants
 const int baud_rate = 9600;
 
+//Settings for measuring resistance
+int raw= 0;
+int Vin= 3.3;
+float VSensor= 0;
+float RKnown= 3000; //change RKnown to the PULL up resistor resistance
+float RSensor= 0;
+float buffer= 0;
 
+//Settings for reading from the multiplexer
+//ref: https://github.com/VRomanov89/AnalogMultiplexing/blob/master/AnalogMultiplexing/AnalogMultiplexing.ino
+
+int pin_Out_S0 = 1;
+int pin_Out_S1 = 2;
+int pin_Out_S2 = 3;
+int pin_In_Mux = A2;
+
+int mux_channel_y0 = 0;
+int mux_channel_y1 = 1; 
+int mux_channel_y2 = 2;
+int mux_channel_y3 = 3;
+int mux_channel_y4 = 4;
+int mux_channel_y5 = 5; 
+int mux_channel_y6 = 6;
+int mux_channel_y7 = 7; 
+
+
+
+ 
+
+// Settings or WiFi connection
 int status = WL_IDLE_STATUS;
 
-IPAddress ip(192, 168, 0, 120); 
-int pc_port = 8002;
+IPAddress ip(192, 168, 0, 121); 
 
 //Max,msp computer must be in the same network as below
 char ssid[] = "Hello World";
@@ -37,26 +65,35 @@ OSCMessage resp;
 WiFiUDP Udp;
 
 int pinReading = 0;
-
+int pc_port = 8003;
 //Battery Pin 
 const int batteryPin = 0;
+
 
 //************************************************************setup
 void setup() {
 
 
   pinMode(6,OUTPUT); //LED
+  mux_setup(); //multiplexer select channel
   
   Serial.begin(baud_rate);
 
-  // check for the presence of the shield:
+  // check if the wifi shield is available:
   if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("NOT PRESENT");
-    return; // don't continue
+    Serial.println("WIFI SHIELD NOT AVAILABLE");
+    return; 
   }
 
 
   connectToWifi();
+}
+
+//************************************************************multiplexer select channel setup
+void mux_setup() {
+  pinMode(pin_Out_S0, OUTPUT);
+  pinMode(pin_Out_S1, OUTPUT);
+  pinMode(pin_Out_S2, OUTPUT);
 }
 
 
@@ -115,33 +152,6 @@ void loop() {
     if(contents == "connect") {
       sendConnectedMSG();
     }
-
-    
-/** NOT IN USE: can be referenced for dynamically connecting different pc_port
-    if(contents.indexOf("connect") > -1) {
-      Serial.println("found connect in contents");
-      Serial.println(contents);
-      
-      //sendConnectedMSG();
-        char *str;
-        char buf[contents.length()];
-        contents.toCharArray(buf,sizeof(buf));
-        char *p = buf;
-     
-        
-      //The last str is the port number
-      while((str = strtok_r(p,":", &p)) !=NULL){
-        Serial.println("str");
-        Serial.println(str);
-        
-      }
-      
-      pc_port = (int) str;
-      Serial.print("new pc port: ");
-      Serial.print(pc_port);
-      
-  **/    
-
   
 
 
@@ -153,10 +163,14 @@ void loop() {
   if (Udp.remoteIP()){
 
     msg.beginMessage("sensors");
-    for(int pin = 1; pin <= 4; pin++){
-    pinReading = analogRead(pin);
-    msg.addArgInt32(pinReading);
+    for(int mux_pin = 0; mux_pin <= 7; mux_pin++){ 
+      pinReading = read_mux(mux_pin);
+      msg.addArgInt32(pinReading);   
+      Serial.print(pinReading);
+      Serial.print(", ");
     }
+    Serial.println("");
+    
     sendUDP();
     delay(50);
   }
@@ -287,5 +301,18 @@ void sendConnectedMSG() {
   sendUDP();
 
 
+}
+
+
+int read_mux(int channel){
+
+    //convert the int channel number to binary
+    //then sets the mux to read from the corresponding channel
+    digitalWrite(pin_Out_S0, HIGH && (channel & B00000001));
+    digitalWrite(pin_Out_S1, HIGH && (channel & B00000010));
+    digitalWrite(pin_Out_S2, HIGH && (channel & B00000100));
+    
+    return analogRead(pin_In_Mux);
+  
 }
 
